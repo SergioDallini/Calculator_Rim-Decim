@@ -11,14 +11,13 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         System.out.println(calc(input));
-
-
     }
     public static String calc(String input){
         int a, b, tempRes;
         String operSign, tempA, tempB;
         String result = "";
         String [] arr = input.trim().split(" ");
+        if (arr.length > 3) throw new IllegalStateException("Неверное количество операндов!");
 
         Pattern patternRim = Pattern.compile("[VXI]+");
 //        Pattern patternDec = Pattern.compile("[0-9]+");
@@ -30,12 +29,14 @@ public class Main {
         if (tempA.matches(String.valueOf(patternRim)) && tempB.matches(String.valueOf(patternRim))){
             a = rimsToDecim(tempA);
             b = rimsToDecim(tempB);
+            if((a < 1 || a > 10) || (b < 1 || b > 10)) throw  new IllegalStateException("Неверные данные!");
             tempRes = oper(a, b, operSign);
             if (tempRes < 1) throw new IllegalStateException("Неверные данные!");
             result = decimToRims(tempRes) + " (" + tempRes + ")";
         } else if (tempA.matches(String.valueOf(patternDec)) && tempB.matches(String.valueOf(patternDec))) {
             a = Integer.parseInt(tempA);
             b = Integer.parseInt(tempB);
+            if((a < 1 || a > 10) || (b < 1 || b > 10)) throw  new IllegalStateException("Неверные данные!");
             result = String.valueOf(oper(a, b, operSign));
         } else throw new IllegalStateException("Неверные данные!");
         return result;
@@ -75,6 +76,7 @@ public class Main {
         String rim = "";
         int numLen = String.valueOf(dec).length();
         char[] arrChar = String.valueOf(dec).toCharArray();
+        if(dec < 1) throw  new IllegalStateException("Неверные данные!");
         if (dec == 10 || dec == 100 || numLen == 1) rim = process(dec);
         if (numLen == 2){
             rim = process(Integer.parseInt(String.valueOf(arrChar[0]))*10) +
